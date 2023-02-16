@@ -1,39 +1,42 @@
-const express = require('express');
+import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-const puppeteer = require('puppeteer');
-const Handlebars = require('handlebars')  
-const Path = require('path')  
+import puppeteer from 'puppeteer';
+import Handlebars from 'handlebars';  
+import Path from 'path';  
+import Fs from 'fs';  
+import Util from 'util';  
+import bodyParser from 'body-parser';
+import multer from 'multer';
+import GIFEncoder from 'gifencoder';
+import * as Canvas from 'canvas'
+
+import { Request,Response } from 'express';
+
 const app = express();
 const port = 3000;
-const Fs = require('fs')  
-const Util = require('util')  
 const ReadFile = Util.promisify(Fs.readFile)
 
-const bodyParser= require('body-parser')
-const multer = require('multer');
 
-const GIFEncoder = require('gifencoder');
-const { createCanvas, loadImage } = require('canvas');
 
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get("/",(req,res)=>{
+app.get("/",(req:Request,res:Response)=>{
   res.send("Hello from express");
 })
 
 
 
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (req:Request, file, cb) {
     cb(null, 'public/uploads/css')
   },
-  filename: function (req, file, cb) {
+  filename: function (req:Request, file, cb) {
     cb(null, uuidv4()+'.css')
   }
 })
 var upload = multer({ storage: storage })
 
-app.post('/createTimer', upload.single('style'), async (req, res, next) => {
+app.post('/createTimer', upload.single('style'), async (req:Request, res:Response, next) => {
   const file = req.file;
   if (!file) {
     
@@ -143,8 +146,8 @@ app.post('/createTimer', upload.single('style'), async (req, res, next) => {
 })
 
 
-app.get("/getTimer",async (req,res)=>{
-  const nFrames=60;
+app.get("/getTimer",async (req:Request,res:Response)=>{
+  const nFrames=120;
   const year=req.query.year;
   const month=req.query.month;
   const day=req.query.day;
@@ -156,12 +159,12 @@ app.get("/getTimer",async (req,res)=>{
   const baseW=110;
   const baseH=120;
 
-  const encoder = new GIFEncoder(baseW*4, baseH,'neuquant',false);
+  const encoder = new GIFEncoder(baseW*4, baseH);
   //encoder.createReadStream().pipe(fs.createWriteStream('testAnim.gif'));
   
 
-  const canvas = createCanvas(baseW*4, baseH);
-  const ctx = canvas.getContext('2d');
+  const canvas = Canvas.createCanvas(baseW*4, baseH);
+  const ctx : any = canvas.getContext('2d');
 
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, baseW*4, baseH);
@@ -179,13 +182,13 @@ app.get("/getTimer",async (req,res)=>{
       encoder.setRepeat(-1);   
       encoder.setDelay(1000);  
       encoder.setQuality(10); 
-      const imageSFromPng = await loadImage('assets/'+uuid+"/s0.png");
+      const imageSFromPng = await Canvas.loadImage('assets/'+uuid+"/s0.png");
       ctx.drawImage(imageSFromPng, baseW*3+1, 0, baseW, baseH);
-      const imageMFromPng = await loadImage('assets/'+uuid+"/m0.png");
+      const imageMFromPng = await Canvas.loadImage('assets/'+uuid+"/m0.png");
       ctx.drawImage(imageMFromPng, baseW*2+1, 0, baseW, baseH);
-      const imageHFromPng = await loadImage('assets/'+uuid+"/h0.png");
+      const imageHFromPng = await Canvas.loadImage('assets/'+uuid+"/h0.png");
       ctx.drawImage(imageHFromPng, baseW*1+1, 0, baseW, baseH);
-      const imageDFromPng = await loadImage('assets/'+uuid+"/d0.png");
+      const imageDFromPng = await Canvas.loadImage('assets/'+uuid+"/d0.png");
       ctx.drawImage(imageDFromPng, 0, 0, baseW, baseH);
       
       for(var i=0;i<3;i++)
@@ -239,13 +242,13 @@ app.get("/getTimer",async (req,res)=>{
 
           
         
-          const imageSFromPng = await loadImage('assets/'+uuid+"/s"+(remainingSeconds<=0?0:remainingSeconds)+'.png');
+          const imageSFromPng = await Canvas.loadImage('assets/'+uuid+"/s"+(remainingSeconds<=0?0:remainingSeconds)+'.png');
           ctx.drawImage(imageSFromPng, baseW*3+1, 0, baseW, baseH);
-          const imageMFromPng = await loadImage('assets/'+uuid+"/m"+(remainingMinutes<=0?0:remainingMinutes)+'.png');
+          const imageMFromPng = await Canvas.loadImage('assets/'+uuid+"/m"+(remainingMinutes<=0?0:remainingMinutes)+'.png');
           ctx.drawImage(imageMFromPng, baseW*2+1, 0, baseW, baseH);
-          const imageHFromPng = await loadImage('assets/'+uuid+"/h"+(remainingHours<=0?0:remainingHours)+'.png');
+          const imageHFromPng = await Canvas.loadImage('assets/'+uuid+"/h"+(remainingHours<=0?0:remainingHours)+'.png');
           ctx.drawImage(imageHFromPng, baseW*1+1, 0, baseW, baseH);
-          const imageDFromPng = await loadImage('assets/'+uuid+"/d"+(remainingDays<=0?0:remainingDays)+'.png');
+          const imageDFromPng = await Canvas.loadImage('assets/'+uuid+"/d"+(remainingDays<=0?0:remainingDays)+'.png');
           ctx.drawImage(imageDFromPng, 0, 0, baseW, baseH);
           encoder.addFrame(ctx);
           if(remainingDays==0 && remainingHours==0 && remainingMinutes==0 && remainingSeconds==0)
