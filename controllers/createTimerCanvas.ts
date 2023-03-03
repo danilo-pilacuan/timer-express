@@ -19,7 +19,10 @@ const browser = await puppeteer.launch();
       width: 110,
       height: 120,
       
-  });      
+  }); 
+  await page.emulateMediaFeatures([
+    {name: 'prefers-color-scheme', value: 'light'},
+  ]);     
 
   const templatePath = Path.resolve('plantilla.html')
   const content = await ReadFile(templatePath, 'utf8')
@@ -37,15 +40,20 @@ const browser = await puppeteer.launch();
     }
 
     const htmlHandleBars = template(data);
-    await page.setContent(htmlHandleBars)
     if (!Fs.existsSync('assets/'+Path.parse(req.file.filename).name+"/")){
       Fs.mkdirSync('assets/'+Path.parse(req.file.filename).name+"/");
     }
-  const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/m"+i.toString()+".png"});
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'light'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/m"+i.toString()+".png",omitBackground: true});
+
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'dark'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenD=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/m"+i.toString()+"_dark.png",omitBackground: true});
 
   }
 
-  for(var i=0;i<=23;i++)
+  for(var i=0;i<=60;i++)
   {
     const data = {
       counter:(i<10?"0":"")+i.toString(),
@@ -54,11 +62,16 @@ const browser = await puppeteer.launch();
     }
 
     const htmlHandleBars = template(data);
-    await page.setContent(htmlHandleBars)
     if (!Fs.existsSync('assets/'+Path.parse(req.file.filename).name+"/")){
       Fs.mkdirSync('assets/'+Path.parse(req.file.filename).name+"/");
     }
-    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/h"+i.toString()+".png"});
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'light'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/h"+i.toString()+".png",omitBackground: true});
+    
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'dark'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenD=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/h"+i.toString()+"_dark.png",omitBackground: true});
 
   }
 
@@ -72,11 +85,16 @@ const browser = await puppeteer.launch();
 
     const htmlHandleBars = template(data);
     
-    await page.setContent(htmlHandleBars)
     if (!Fs.existsSync('assets/'+Path.parse(req.file.filename).name+"/")){
       Fs.mkdirSync('assets/'+Path.parse(req.file.filename).name+"/");
     }
-    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/s"+i.toString()+".png"});
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'light'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/s"+i.toString()+".png",omitBackground: true});
+    
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'dark'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screend=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/s"+i.toString()+"_dark.png",omitBackground: true});
 
   }
 
@@ -90,11 +108,16 @@ const browser = await puppeteer.launch();
 
     const htmlHandleBars = template(data);
     
-    await page.setContent(htmlHandleBars)
     if (!Fs.existsSync('assets/'+Path.parse(req.file.filename).name+"/")){
       Fs.mkdirSync('assets/'+Path.parse(req.file.filename).name+"/");
     }
-    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/d"+i.toString()+".png"});
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'light'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenP=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/d"+i.toString()+".png",omitBackground: true});
+    
+    await page.emulateMediaFeatures([ {name: 'prefers-color-scheme', value: 'dark'}, ]);     
+    await page.setContent(htmlHandleBars)
+    const screenD=await page.screenshot({type:"png",captureBeyondViewport:false,path: 'assets/'+Path.parse(req.file.filename).name+"/d"+i.toString()+"_dark.png",omitBackground: true});
 
   }
 

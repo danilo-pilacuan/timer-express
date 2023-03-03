@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import Fs from 'fs';  
 import Util from 'util';  
-import GIFEncoder from 'gifencoder';
+import GIFEncoder from 'gif-encoder';
 import * as Canvas from 'canvas'
 const ReadFile = Util.promisify(Fs.readFile);
 
 
-export const getTimerCanvas = async (req: Request, res: Response) => {
+export const getTimerConGifEnc2 = async (req: Request, res: Response) => {
 
 const nFrames=60;
   const year=req.query.year;
@@ -34,7 +34,10 @@ const nFrames=60;
     totalWidth=baseW*3+imgPadding;
   }
 
+  var file = require('fs').createWriteStream('img.gif');
+
   const encoder = new GIFEncoder(totalWidth, baseH);
+  encoder.pipe(file);
 
   
 
@@ -52,14 +55,16 @@ const nFrames=60;
     const dateNow = new Date(Date.now());
 
     var totalMiliSeconds=dateEnd.getTime()-dateNow.getTime();
-    console.log("endComp")
+    
     
 
     if(totalMiliSeconds<1000)
     {
-      encoder.start();
+      encoder.writeHeader();
+      encoder.read(10000000);
       encoder.setRepeat(-1);   
-      //encoder.setTransparent("0xFFFFFF");
+      encoder.setTransparent(0xFFFFFF);
+      encoder.setDispose(3);
       encoder.setDelay(1000);  
       encoder.setQuality(10); 
       
@@ -82,12 +87,13 @@ const nFrames=60;
       const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       
-      console.log("endComp")
+      
       
       
       for(var i=0;i<3;i++)
       {
-        encoder.addFrame(ctx);
+        //encoder.addFrame(ctx);
+        encoder.addFrame(ctx.getImageData(0, 0, totalWidth, totalHeight).data);
       }
 
 
@@ -96,19 +102,23 @@ const nFrames=60;
     {
       if(Math.floor(totalMiliSeconds/1000)<nFrames)
       {
-        encoder.start();
-        encoder.setRepeat(-1);   
-        encoder.setTransparent("0xFFFFFF");
-        encoder.setDelay(1000);  
-        encoder.setQuality(10); 
+        encoder.writeHeader();
+      encoder.read(10000000);
+      encoder.setRepeat(-1);   
+      encoder.setTransparent(0xFFFFFF);
+      encoder.setDispose(3);
+      encoder.setDelay(1000);  
+      encoder.setQuality(10); 
       }
       else
       {
-        encoder.start();
-        encoder.setRepeat(0);   
-        encoder.setTransparent("0xFFFFFF");
-        encoder.setDelay(1000); 
-        encoder.setQuality(10); 
+        encoder.writeHeader();
+      encoder.read(10000000);
+      encoder.setRepeat(-1);   
+      encoder.setTransparent(0xFFFFFF);
+      encoder.setDispose(3);
+      encoder.setDelay(1000);  
+      encoder.setQuality(10);  
       }
       var remainingDays=Math.floor((totalMiliSeconds)/(1000*3600*24))
       if(nodays==1)
@@ -165,7 +175,7 @@ const nFrames=60;
           const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+'.png');
           ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           
-          encoder.addFrame(ctx);
+          encoder.addFrame(ctx.getImageData(0, 0, totalWidth, totalHeight).data);
           positionCounter=positionCounter+1;
 
           if(remainingDays==0 && remainingHours==0 && remainingMinutes==0 && remainingSeconds==0)
@@ -180,8 +190,9 @@ const nFrames=60;
 
     encoder.finish()
 
-    res.writeHead(200, { 'Content-Type': 'image/gif' });
-    res.end(encoder.out.getData(), 'binary');
+    //res.writeHead(200, { 'Content-Type': 'image/gif' });
+    //res.end(encoder.out.getData(), 'binary');
+    res.json({ok:"ok"})
   }
 
 };

@@ -14,7 +14,7 @@ body {
     line-height:48px;
     font-style: normal;
     font-weight: 400;
-    color: #5c0f13;
+    color: #0f265c;
     font-family: 'Arial';
 }
 .segundosDescription{
@@ -23,7 +23,7 @@ body {
   font-family: 'Arial';
   font-style: normal;
   font-weight: 600;
-  color: #f6ff76;
+  color: #0f265c;
 }
 .container
 {
@@ -33,7 +33,7 @@ body {
 {
   width: 95px;
   height: 95px;
-  border: 4px solid #32adff;
+  border: 4px solid #0f265c;
   border-radius: 50%;
 }
 .circleContainer

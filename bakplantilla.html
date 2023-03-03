@@ -3,73 +3,68 @@
     <html lang="en">
     <head>
         <style>
-            body {
-        width: 110px;
-        height: 120px;
-        text-align: center;
-        display: flex;
-      justify-content:center;
-      flex-direction: column; 
-      }
-      /* .segundosCounter{
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 48px;
-    color: #ffdd00;
-    line-height:52px;
-    }
-    .segundosDescription{
-      margin-top: 0px;
-      margin-bottom: 0px;
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    color: #ffdd00;
-    line-height:2px;
-    
-    } */
-    .container
-    {
-    height: fit-content;
-    }
-    .circle
-    {
-      width: 100px;
-      height: 100px;
-      border: 4px solid #0f265c;
-      border-radius: 50%;
-    }
-    .circleContainer
-    {
-      position: absolute;
-      width: 110px;
-      height: 120px;
-      display: flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction: column;
-    }
+          /**
+ * HTML5 / CSS3 Circle with Partial Border
+ * http://stackoverflow.com/q/13059190/1397351
+ */
+ body {
+          width: 120px;
+          height: 120px;
+          text-align: center;
+          margin: 0px;
+          padding: 0px;
+          display: flex;
+          align-items:center;
+        justify-content:center;
+        }
+
+.circle {
+  position: relative;
+  margin: 10em auto;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+
+
+
+
+.arc {
+  overflow: hidden;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: -10000em;
+  right: 50%;
+  bottom: 50%;
+  left: -10000em;
+  padding: 10000em 0 0 10000em;
+  transform-origin: 100% 100%;
+  transform: rotateZ(90deg) rotateX(0deg) skewX(-82.8deg);
+}
+
+.arc:before {
+  display: block;
+  border: solid 3px navy;
+  width: 200%;
+  height: 200%;
+  box-sizing: border-box;
+  border-radius: 50%;
+  transform: skewX(82.8deg);
+  content: '';
+}
+
+
           </style>
       <!-- <link rel="stylesheet" href="/bootstrap/css/plantilla.css"> -->
-      <link rel="stylesheet" href="http://localhost:3000/{{plantilla}}">
+      
     </head>
     <body>
-        <div>
-            <div>
-                <div>
-                    <div id="capture" class="container">
-                        <div id="secondsCounter" class="segundosCounter">{{counter}}</div>
-                        <div class="segundosDescription">
-                            {{message}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        
-    
+      <div class='circle'>
+        <div class='arc'></div>
+        <div class='text'></div>
+      </div>
     </body>
     </html>

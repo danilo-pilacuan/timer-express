@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import Fs from 'fs';  
 import Util from 'util';  
-import GIFEncoder from 'gifencoder';
+import { GIFEncoder, quantize, applyPalette } from 'gifenc';
 import * as Canvas from 'canvas'
 const ReadFile = Util.promisify(Fs.readFile);
 
 
-export const getTimerCanvas = async (req: Request, res: Response) => {
+export const getTimerNoDays = async (req: Request, res: Response) => {
 
 const nFrames=60;
   const year=req.query.year;
@@ -34,7 +34,9 @@ const nFrames=60;
     totalWidth=baseW*3+imgPadding;
   }
 
-  const encoder = new GIFEncoder(totalWidth, baseH);
+  
+
+  const encoder = GIFEncoder();
 
   
 
@@ -57,14 +59,14 @@ const nFrames=60;
 
     if(totalMiliSeconds<1000)
     {
-      encoder.start();
-      encoder.setRepeat(-1);   
+      //encoder.start();
+      //encoder.setRepeat(-1);   
       //encoder.setTransparent("0xFFFFFF");
-      encoder.setDelay(1000);  
-      encoder.setQuality(10); 
+      //encoder.setDelay(1000);  
+      //encoder.setQuality(10); 
       
-      const imgBackground = await Canvas.loadImage('assets/back/back.png');
-      ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      // const imgBackground = await Canvas.loadImage('assets/back/back.png');
+      // ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
 
       if(nodays==0)
       {
@@ -87,7 +89,7 @@ const nFrames=60;
       
       for(var i=0;i<3;i++)
       {
-        encoder.addFrame(ctx);
+        encoder.writeFrame(ctx,totalWidth,totalHeight);
       }
 
 
@@ -164,7 +166,6 @@ const nFrames=60;
           positionCounter=positionCounter+1;
           const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+'.png');
           ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
-          
           encoder.addFrame(ctx);
           positionCounter=positionCounter+1;
 
@@ -178,7 +179,6 @@ const nFrames=60;
       
     }
 
-    encoder.finish()
 
     res.writeHead(200, { 'Content-Type': 'image/gif' });
     res.end(encoder.out.getData(), 'binary');
