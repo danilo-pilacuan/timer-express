@@ -1,0 +1,48 @@
+body {
+  width: 110px;
+  height: 120px;
+  text-align: center;
+  display: flex;
+  justify-content:center;
+  flex-direction: column; 
+  margin-left: 0px;
+  margin-top: 0px;
+  padding-bottom: 8px;
+  }
+  .segundosCounter{
+    font-size: 48px;
+    line-height:48px;
+    font-style: normal;
+    font-weight: 400;
+    color: #0f265c;
+    font-family: 'Arial';
+}
+.segundosDescription{
+  font-size: 14px;
+  line-height:14px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 600;
+  color: #0f265c;
+}
+.container
+{
+/* background-color: aqua; */
+}
+.circle
+{
+  width: 95px;
+  height: 95px;
+  border: 4px solid #0f265c;
+  border-radius: 50%;
+}
+.circleContainer
+{
+  position: absolute;
+  width: 110px;
+  height: 120px;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+}

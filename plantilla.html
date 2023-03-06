@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <style>
+        /* body {
+          width: 110px;
+          height: 120px;
+          text-align: center;
+          margin: 0px;
+          padding: 0px;
+          display: flex;
+          align-items:center;
+        justify-content:center;
+        }
+        .segundosCounter{
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    color: #0f265c;
+    
+}
+.segundosDescription{
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0f265c;
+    
+}
+.container
+{
+    vertical-align: middle;
+} */
+
+
+
+
+.progressbar {
+    position: absolute;
+  width: 120px;
+  height: 120px;
+  /* margin: 1em; */
+  transform: rotate(-90deg);
+  vertical-align: auto;
+}
+
+.progressbar__svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  align-self: center;
+
+}
+
+.progressbar__svg-circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 6;
+  stroke-dasharray: 339;  /* se debe poner el perimetro*/
+  stroke-dashoffset: {{valorPorcentaje}}; /* se calcula por 339 - ((339*porcentaje)/100) */
+  stroke: blue;
+  stroke-linecap: round;
+  /* transform: translate(5px, 5px); */
+}
+
+.second_circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 6;
+  stroke-dasharray: 339;  /* se debe poner el perimetro*/
+  stroke-dashoffset: 0; /* se calcula por 339 - ((339*porcentaje)/100) */
+  stroke: rgb(123, 123, 138);
+  stroke-linecap: round;
+  /* transform: translate(5px, 5px); */
+}
+
+
+
+
+      </style>
+      <!-- <link rel="stylesheet" href="/bootstrap/css/plantilla.css"> -->
+      <link rel="stylesheet" href="http://localhost:3000/{{plantilla}}">
+    </head>
+    <body>
+        <!-- <div class="circleContainer">
+            <div class="circle"></div>
+        </div> -->
+
+        <div class="progressbar">
+            <svg class="progressbar__svg">
+                <circle cx="60" cy="60" r="54" class="second_circle"> </circle>
+                <circle cx="60" cy="60" r="54" class="progressbar__svg-circle circle-scss"> </circle>
+            </svg>
+            
+        </div>
+                    
+        <div id="capture" class="container">
+            <div id="secondsCounter" class="segundosCounter">{{counter}}</div>
+            <div class="segundosDescription">
+                {{message}}
+            </div>
+        </div> 
+
+
+        
+
+    
+    </body>
+    </html>
