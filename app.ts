@@ -3,6 +3,22 @@ import bodyParser from 'body-parser';
 import { Request,Response } from 'express';
 import Path from 'path';  
 import { router } from "./routes";
+
+
+
+///----------------------------------------------------------------
+///   Cache store ///---------------------------------------------
+
+import Fs from 'fs';  
+import Util from 'util';  
+import GIFEncoder from 'gif-encoder';
+import * as Canvas from 'canvas'
+
+
+
+///----------------------------------------------------------------
+
+
 const app = express();
 const port = 3000;
 

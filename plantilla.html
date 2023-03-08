@@ -38,11 +38,14 @@
 
 .progressbar {
     position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 240px;
+  height: 240px;
+  top: 0px;
+  left: 0px;
   /* margin: 1em; */
   transform: rotate(-90deg);
-  vertical-align: auto;
+  vertical-align: middle;
+  align-items: center;
 }
 
 .progressbar__svg {
@@ -50,17 +53,18 @@
   width: 100%;
   height: 100%;
   align-self: center;
-
+  align-items: center;
+  /* background-color: red; */
 }
 
 .progressbar__svg-circle {
   width: 100%;
   height: 100%;
   fill: none;
-  stroke-width: 6;
-  stroke-dasharray: 339;  /* se debe poner el perimetro*/
+  stroke-width: 10;
+  stroke-dasharray: 715;  /* se debe poner el perimetro*/
   stroke-dashoffset: {{valorPorcentaje}}; /* se calcula por 339 - ((339*porcentaje)/100) */
-  stroke: blue;
+  stroke: #0f265c;
   stroke-linecap: round;
   /* transform: translate(5px, 5px); */
 }
@@ -70,7 +74,7 @@
   height: 100%;
   fill: none;
   stroke-width: 6;
-  stroke-dasharray: 339;  /* se debe poner el perimetro*/
+  stroke-dasharray: 715;  /* se debe poner el perimetro*/
   stroke-dashoffset: 0; /* se calcula por 339 - ((339*porcentaje)/100) */
   stroke: rgb(123, 123, 138);
   stroke-linecap: round;
@@ -91,18 +95,19 @@
 
         <div class="progressbar">
             <svg class="progressbar__svg">
-                <circle cx="60" cy="60" r="54" class="second_circle"> </circle>
-                <circle cx="60" cy="60" r="54" class="progressbar__svg-circle circle-scss"> </circle>
+                <circle cx="120" cy="120" r="104" class="second_circle"> </circle>
+                <circle cx="120" cy="120" r="103" class="progressbar__svg-circle circle-scss"> </circle>
             </svg>
-            
-        </div>
-                    
-        <div id="capture" class="container">
-            <div id="secondsCounter" class="segundosCounter">{{counter}}</div>
-            <div class="segundosDescription">
-                {{message}}
-            </div>
         </div> 
+
+ 
+              
+  <div id="capture" class="container">
+      <div id="secondsCounter" class="segundosCounter">{{counter}}</div>
+      <div class="segundosDescription">
+          {{message}}
+      </div>
+  </div> 
 
 
         

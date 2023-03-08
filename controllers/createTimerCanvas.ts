@@ -16,8 +16,8 @@ else
 const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.setViewport({
-      width: 120,
-      height: 120,
+      width: 240,
+      height: 240,
       
   }); 
   await page.emulateMediaFeatures([
@@ -37,7 +37,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Minutos',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(339 - ((339*(i*100/60))/100))
+      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -63,7 +63,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Horas',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(339 - ((339*(i*100/60))/100))
+      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -86,7 +86,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Segundos',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(339 - ((339*(i*100/60))/100))
+      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -110,7 +110,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Días',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(339 - ((339*(i*100/60))/100))
+      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);

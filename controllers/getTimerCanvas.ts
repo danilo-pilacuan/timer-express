@@ -18,8 +18,8 @@ const nFrames=60;
   const nodays=parseInt(req.query.nodays.toString());
   const timerId=req.query.timerId;
 
-  const baseW=60;
-  const baseH=60;
+  const baseW=120;
+  const baseH=120;
 
   const imgPadding=60;
   const paddingLeft=imgPadding/2
@@ -52,19 +52,19 @@ const nFrames=60;
     const dateNow = new Date(Date.now());
 
     var totalMiliSeconds=dateEnd.getTime()-dateNow.getTime();
-    console.log("endComp")
+    
     
 
     if(totalMiliSeconds<1000)
     {
       encoder.start();
       encoder.setRepeat(-1);   
-      //encoder.setTransparent("0xFFFFFF");
+      encoder.setTransparent("0xFFFFFF");
       encoder.setDelay(1000);  
       encoder.setQuality(10); 
       
-      //const imgBackground = await Canvas.loadImage('assets/back/back.png');
-      //ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      const imgBackground = await Canvas.loadImage('assets/back/back.png');
+      ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
 
       if(nodays==0)
       {
@@ -82,8 +82,7 @@ const nFrames=60;
       const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       
-      console.log("endComp")
-      
+            
       
       for(var i=0;i<3;i++)
       {
@@ -98,7 +97,7 @@ const nFrames=60;
       {
         encoder.start();
         encoder.setRepeat(-1);   
-        // encoder.setTransparent("0xFFFFFF");
+        //encoder.setTransparent("0xFFFFFF");
         encoder.setDelay(1000);  
         encoder.setQuality(10); 
       }
@@ -106,7 +105,7 @@ const nFrames=60;
       {
         encoder.start();
         encoder.setRepeat(0);   
-        // encoder.setTransparent("0xFFFFFF");
+        //encoder.setTransparent("0xFFFFFF");
         encoder.setDelay(1000); 
         encoder.setQuality(10); 
       }
@@ -144,8 +143,8 @@ const nFrames=60;
 
           positionCounter=0;
           
-          // const imgBackground = await Canvas.loadImage('assets/back/back.png');
-          // ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+          const imgBackground = await Canvas.loadImage('assets/back/back.png');
+          ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
 
           if(nodays==0)
           {
@@ -167,6 +166,8 @@ const nFrames=60;
           
           encoder.addFrame(ctx);
           positionCounter=positionCounter+1;
+
+          ctx.clearRect(0, 0, totalWidth, totalHeight);
 
           if(remainingDays==0 && remainingHours==0 && remainingMinutes==0 && remainingSeconds==0)
           {

@@ -18,7 +18,7 @@ const nFrames=60;
   const nodays=parseInt(req.query.nodays.toString());
   const timerId=req.query.timerId;
 
-  const baseW=55;
+  const baseW=60;
   const baseH=60;
 
   const imgPadding=60;
@@ -44,7 +44,7 @@ const nFrames=60;
   const canvas = Canvas.createCanvas(totalWidth, baseH);
   const ctx : any = canvas.getContext('2d');
 
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, totalWidth, baseH);
   
   var positionCounter=0;
@@ -63,7 +63,7 @@ const nFrames=60;
       encoder.writeHeader();
       encoder.read(10000000);
       encoder.setRepeat(-1);   
-      //encoder.setTransparent(0xFFFFFF);
+      encoder.setTransparent(0xFFFFFF);
       encoder.setDispose(3);
       encoder.setDelay(1000);  
       encoder.setQuality(10); 
@@ -95,7 +95,8 @@ const nFrames=60;
         //encoder.addFrame(ctx);
         encoder.addFrame(ctx.getImageData(0, 0, totalWidth, totalHeight).data);
       }
-
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, totalWidth, baseH);
 
     }
     else
@@ -177,6 +178,10 @@ const nFrames=60;
           
           encoder.addFrame(ctx.getImageData(0, 0, totalWidth, totalHeight).data);
           positionCounter=positionCounter+1;
+
+          // ctx.fillStyle = '#ffffff';
+          // ctx.fillRect(0, 0, totalWidth, baseH);
+          ctx.clearRect(0, 0, totalWidth, totalHeight);
 
           if(remainingDays==0 && remainingHours==0 && remainingMinutes==0 && remainingSeconds==0)
           {
