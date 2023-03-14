@@ -7,10 +7,6 @@ import { createTimerCanvas } from "../controllers/createTimerCanvas";
 import { getTimerCanvas } from "../controllers/getTimerCanvas";
 import { getTimerNoDays } from "../controllers/getTimerNoDays";
 
-import { getTimerConGifEnc2 } from "../controllers/getTimerConGifEnc2";
-import { getTimerWithCache } from "../controllers/getTimerWithCache";
-import { getWithGlobalCache } from "../controllers/getWithGlobalCache";
-
 import { v4 as uuidv4 } from 'uuid';
 import { Request,Response } from 'express';
 
@@ -71,50 +67,6 @@ router.get(
 );
 
 
-router.get(
-  "/getTimerConGifEnc2",
-  [
-      readQuery,
-      query("timerId").exists().notEmpty(),
-      query("year").exists().notEmpty(),
-      query("month").exists().notEmpty(),
-      query("day").exists().notEmpty(),  
-      query("hours").exists().notEmpty(),  
-      query("minutes").exists().notEmpty(),  
-      validateFields
-  ],
-  getTimerConGifEnc2
-);
-
-router.get(
-  "/getTimerWithCache",
-  [
-      readQuery,
-      query("timerId").exists().notEmpty(),
-      query("year").exists().notEmpty(),
-      query("month").exists().notEmpty(),
-      query("day").exists().notEmpty(),  
-      query("hours").exists().notEmpty(),  
-      query("minutes").exists().notEmpty(),  
-      validateFields
-  ],
-  getTimerWithCache
-);
-
-router.get(
-  "/getWithGlobalCache",
-  [
-      readQuery,
-      query("timerId").exists().notEmpty(),
-      query("year").exists().notEmpty(),
-      query("month").exists().notEmpty(),
-      query("day").exists().notEmpty(),  
-      query("hours").exists().notEmpty(),  
-      query("minutes").exists().notEmpty(),  
-      validateFields
-  ],
-  getWithGlobalCache
-);
 
 router.get("/hello",(req:Request,res:Response)=>{
     res.send("Hello from router");

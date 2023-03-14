@@ -37,7 +37,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Minutos',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
+      valorPorcentaje: -Math.ceil(648 - ((648*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -63,7 +63,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Horas',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
+      valorPorcentaje: -Math.ceil(648 - ((648*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -86,7 +86,7 @@ const browser = await puppeteer.launch();
       counter:(i<10?"0":"")+i.toString(),
       message: 'Segundos',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
+      valorPorcentaje: -Math.ceil(648 - ((648*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);
@@ -106,11 +106,12 @@ const browser = await puppeteer.launch();
 
   for(var i=0;i<=59;i++)
   {
+    console.log(-Math.ceil(648 - ((648*(i*100/60))/100)))
     const data = {
       counter:(i<10?"0":"")+i.toString(),
       message: 'Días',
       plantilla:"uploads/css/"+req.file.filename,
-      valorPorcentaje: -(715 - ((715*(i*100/60))/100))
+      valorPorcentaje: -Math.ceil(648 - ((648*(i*100/60))/100))
     }
 
     const htmlHandleBars = template(data);

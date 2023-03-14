@@ -9,6 +9,7 @@ const ReadFile = Util.promisify(Fs.readFile);
 export const getTimerNoDays = async (req: Request, res: Response) => {
 
   const nFrames=60;
+  const timerId=req.query.timerId;
   const year=req.query.year;
   const month=req.query.month;
   const day=req.query.day;
@@ -16,7 +17,6 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
   const minutes=req.query.minutes;
   const darkmode=parseInt(req.query.darkmode.toString());
   const nodays=parseInt(req.query.nodays.toString());
-  const timerId=req.query.timerId;
 
   const baseW=120;
   const baseH=120;
@@ -52,14 +52,24 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
     const dateNow = new Date(Date.now());
 
     var totalMiliSeconds=dateEnd.getTime()-dateNow.getTime();
-    console.log("endComp")
     
+    const imageForPalette = await Canvas.loadImage('assets/'+timerId+"/s59"+(darkmode==1?"_dark":"")+'.png');
+    ctx.drawImage(imageForPalette, 0, 0, totalWidth, totalHeight);
+    const imageDataForPalette=ctx.getImageData(0,0,totalWidth,totalHeight).data;
+    
+    //const palette=quantize(imageDataForPalette,256,{format:"rgba4444",oneBitAlpha:true});
+    const palette=quantize(imageDataForPalette,256,{format:"rgba4444",oneBitAlpha:false,clearAlpha:true,clearAlphaThreshold:10,clearAlphaColor:0xFF});
+    console.log(palette)
+    console.log(palette.length)
+    ctx.clearRect(0, 0, totalWidth, totalHeight);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, totalWidth, baseH);
 
     if(totalMiliSeconds<1000)
     {
       //encoder.start();
       //encoder.setRepeat(-1);   
-      //encoder.setTransparent("0xFFFFFF");
+      //encoder.setTransparent("0xffffff");
       //encoder.setDelay(1000);  
       //encoder.setQuality(10); 
       
@@ -82,12 +92,13 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
       const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       
-      console.log("endComp")
       
       
       for(var i=0;i<3;i++)
       {
-        encoder.writeFrame(ctx,totalWidth,totalHeight);
+        const dataCtx=ctx.getImageData(0,0,totalWidth,totalHeight);
+        const index = applyPalette(dataCtx.data, palette);
+        encoder.writeFrame(index, dataCtx.width, dataCtx.height, { palette:palette,delay:1000,transparent:true });
       }
 
 
@@ -98,7 +109,7 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
       // {
       //   encoder.start();
       //   encoder.setRepeat(-1);   
-      //   encoder.setTransparent("0xFFFFFF");
+      //   encoder.setTransparent("0xffffff");
       //   encoder.setDelay(1000);  
       //   encoder.setQuality(10); 
       // }
@@ -106,18 +117,16 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
       // {
       //   encoder.start();
       //   encoder.setRepeat(0);   
-      //   encoder.setTransparent("0xFFFFFF");
+      //   encoder.setTransparent("0xffffff");
       //   encoder.setDelay(1000); 
       //   encoder.setQuality(10); 
       // }
 
       
-      const imageForPalette = await Canvas.loadImage('assets/'+timerId+"/s0"+(darkmode==1?"_dark":"")+'.png');
+      
 
       //ctx.clearRect(0, 0, totalWidth, totalHeight);
-      ctx.drawImage(imageForPalette, 0, 0, totalWidth, totalHeight);
-      const imageDataForPalette=ctx.getImageData(0,0,totalWidth,totalHeight).data;
-      const palette=quantize(imageDataForPalette,256);
+      
       
       // console.log("Got it")
       // console.log(palette)
@@ -158,14 +167,16 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
           positionCounter=0;
           
           
-          ctx.clearRect(0, 0, totalWidth, totalHeight);
+          //ctx.clearRect(0, 0, totalWidth, totalHeight);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, totalWidth, baseH);
           
-          const imgBackground = await Canvas.loadImage('assets/back/back.png');
-          ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+          // const imgBackground = await Canvas.loadImage('assets/back/back.png');
+          // ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
           
-          console.time("writeOneFrame");
+          //console.time("writeOneFrame");
 
-
+          //console.log("more than 1000")
           if(nodays==0)
           {
             const imageDFromPng = await Canvas.loadImage('assets/'+timerId+"/d"+(remainingDays<=0?0:remainingDays)+(darkmode==1?"_dark":"")+'.png');
@@ -189,8 +200,8 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
 
           
           const index = applyPalette(dataCtx.data, palette);
-          encoder.writeFrame(index, dataCtx.width, dataCtx.height, { palette:palette,delay:1000 });
-          console.timeEnd("writeOneFrame");
+          encoder.writeFrame(index, dataCtx.width, dataCtx.height, { palette:palette,delay:1000,transparent:true,transparentIndex:200});
+          //console.timeEnd("writeOneFrame");
 
           positionCounter=positionCounter+1;
 
