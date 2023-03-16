@@ -40,6 +40,15 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 
-*.png
+
 
 public/uploads/*
+
+assets/cache/*
+
+!assets/cache/timer1
+!assets/cache/timer2
+!assets/cache/timer3
+!assets/cache/timer4
+!assets/cache/backgrounds
+!assets/cache/back
