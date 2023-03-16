@@ -6,7 +6,7 @@ import * as Canvas from "canvas"
 const ReadFile = Util.promisify(Fs.readFile);
 
 
-export const getTimerNoDays = async (req: Request, res: Response) => {
+export const getTimer = async (req: Request, res: Response) => {
 
   const nFrames=60;
   const timerId=req.query.timerId;
@@ -46,8 +46,7 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
   ctx.fillRect(0, 0, totalWidth, baseH);
   
   var positionCounter=0;
-
-  if (Fs.existsSync("assets/"+timerId+"/"))
+  if (Fs.existsSync("assets/cache/"+timerId+"/"))
   {
     const dateEnd = new Date(year+"-"+month+"-"+day+"T"+hours+":"+minutes+":00");
     const dateNow = new Date(Date.now());
@@ -55,69 +54,59 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
     var totalMiliSeconds=dateEnd.getTime()-dateNow.getTime();
     if(background==1)
     {
-      console.log("ok back")
       if(nodays==1)
       {
-        console.log("ok nodays")
-        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+        const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
         ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
       }
       else
       {
-        console.log("no dayyys")
-        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+        const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
         ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
       }
     }
     
-    const imageForPalette = await Canvas.loadImage("assets/"+timerId+"/s59"+(darkmode==1?"_dark":"")+".png");
+    const imageForPalette = await Canvas.loadImage("assets/cache/"+timerId+"/s59"+(darkmode==1?"_dark":"")+".png");
     ctx.drawImage(imageForPalette, 0, 0, totalWidth, totalHeight);
     const imageDataForPalette=ctx.getImageData(0,0,totalWidth,totalHeight).data;
     
-    //const palette=quantize(imageDataForPalette,256,{format:"rgba4444",oneBitAlpha:true});
+    
     const palette=quantize(imageDataForPalette,256,{format:"rgba4444",oneBitAlpha:false,clearAlpha:true,clearAlphaThreshold:10,clearAlphaColor:0xFF});
-    console.log(palette)
-    console.log(palette.length)
+    
     ctx.clearRect(0, 0, totalWidth, totalHeight);
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, totalWidth, baseH);
 
     if(totalMiliSeconds<1000)
     {
-      //encoder.start();
-      //encoder.setRepeat(-1);   
-      //encoder.setTransparent("0xffffff");
-      //encoder.setDelay(1000);  
-      //encoder.setQuality(10); 
-      
       if(background==1)
-    {
-      if(nodays==1)
       {
-        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
-        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+        if(nodays==1)
+        {
+          const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+          ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+        }
+        else
+        {
+          const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+          ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+        }
       }
-      else
-      {
-        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
-        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
-      }
-    }
 
       if(nodays==0)
       {
-        const imageDFromPng = await Canvas.loadImage("assets/"+timerId+"/d0"+(darkmode==1?"_dark":"")+".png");
+        const imageDFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/d0"+(darkmode==1?"_dark":"")+".png");
         ctx.drawImage(imageDFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
         positionCounter=positionCounter+1;
       }
 
-      const imageHFromPng = await Canvas.loadImage("assets/"+timerId+"/h0"+(darkmode==1?"_dark":"")+".png");
+      const imageHFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/h0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageHFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       positionCounter=positionCounter+1;
-      const imageMFromPng = await Canvas.loadImage("assets/"+timerId+"/m0"+(darkmode==1?"_dark":"")+".png");
+      const imageMFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/m0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageMFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       positionCounter=positionCounter+1;
-      const imageSFromPng = await Canvas.loadImage("assets/"+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
+      const imageSFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       
       
@@ -133,33 +122,6 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
     }
     else
     {
-      // if(Math.floor(totalMiliSeconds/1000)<nFrames)
-      // {
-      //   encoder.start();
-      //   encoder.setRepeat(-1);   
-      //   encoder.setTransparent("0xffffff");
-      //   encoder.setDelay(1000);  
-      //   encoder.setQuality(10); 
-      // }
-      // else
-      // {
-      //   encoder.start();
-      //   encoder.setRepeat(0);   
-      //   encoder.setTransparent("0xffffff");
-      //   encoder.setDelay(1000); 
-      //   encoder.setQuality(10); 
-      // }
-
-      
-      
-
-      //ctx.clearRect(0, 0, totalWidth, totalHeight);
-      
-      
-      // console.log("Got it")
-      // console.log(palette)
-
-
       var remainingDays=Math.floor((totalMiliSeconds)/(1000*3600*24))
       if(nodays==1)
       {
@@ -194,8 +156,6 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
 
           positionCounter=0;
           
-          
-          //ctx.clearRect(0, 0, totalWidth, totalHeight);
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, totalWidth, baseH);
           
@@ -203,44 +163,38 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
           {
             if(nodays==1)
             {
-              const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+              const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
               ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
             }
             else
             {
-              const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+              const imgBackground = await Canvas.loadImage("assets/cache/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
               ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
             }
           }
           
-          //console.time("writeOneFrame");
-
-          //console.log("more than 1000")
           if(nodays==0)
           {
-            const imageDFromPng = await Canvas.loadImage("assets/"+timerId+"/d"+(remainingDays<=0?0:remainingDays)+(darkmode==1?"_dark":"")+".png");
+            const imageDFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/d"+(remainingDays<=0?0:remainingDays)+(darkmode==1?"_dark":"")+".png");
             ctx.drawImage(imageDFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
             positionCounter=positionCounter+1;
           }
 
           
           
-          const imageHFromPng = await Canvas.loadImage("assets/"+timerId+"/h"+(remainingHours<=0?0:remainingHours)+(darkmode==1?"_dark":"")+".png");
+          const imageHFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/h"+(remainingHours<=0?0:remainingHours)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageHFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           positionCounter=positionCounter+1;
-          const imageMFromPng = await Canvas.loadImage("assets/"+timerId+"/m"+(remainingMinutes<=0?0:remainingMinutes)+(darkmode==1?"_dark":"")+".png");
+          const imageMFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/m"+(remainingMinutes<=0?0:remainingMinutes)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageMFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           positionCounter=positionCounter+1;
-          const imageSFromPng = await Canvas.loadImage("assets/"+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+".png");
+          const imageSFromPng = await Canvas.loadImage("assets/cache/"+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
-          //encoder.addFrame(ctx);
           
           const dataCtx=ctx.getImageData(0,0,totalWidth,totalHeight);
-
-          
+                    
           const index = applyPalette(dataCtx.data, palette);
           encoder.writeFrame(index, dataCtx.width, dataCtx.height, { palette:palette,delay:1000,transparent:true,transparentIndex:200});
-          //console.timeEnd("writeOneFrame");
 
           positionCounter=positionCounter+1;
 
