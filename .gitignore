@@ -42,7 +42,7 @@ yarn.lock
 
 
 
-public/uploads/*
+public/uploads/css*
 
 assets/cache/*
 
