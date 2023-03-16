@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import Fs from 'fs';  
-import Util from 'util';  
-import { GIFEncoder, quantize, applyPalette } from 'gifenc';
-import * as Canvas from 'canvas'
+import Fs from "fs";  
+import Util from "util";  
+import { GIFEncoder, quantize, applyPalette } from "gifenc";
+import * as Canvas from "canvas"
 const ReadFile = Util.promisify(Fs.readFile);
 
 
@@ -17,11 +17,12 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
   const minutes=req.query.minutes;
   const darkmode=parseInt(req.query.darkmode.toString());
   const nodays=parseInt(req.query.nodays.toString());
+  const background=parseInt(req.query.background.toString());
 
-  const baseW=120;
-  const baseH=120;
+  const baseW=240;
+  const baseH=240;
 
-  const imgPadding=60;
+  const imgPadding=baseW/2;
   const paddingLeft=imgPadding/2
 
   var totalWidth=baseW*4+imgPadding;
@@ -39,21 +40,37 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
   
 
   const canvas = Canvas.createCanvas(totalWidth, baseH);
-  const ctx : any = canvas.getContext('2d');
+  const ctx : any = canvas.getContext("2d");
 
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, totalWidth, baseH);
   
   var positionCounter=0;
 
-  if (Fs.existsSync('assets/'+timerId+"/"))
+  if (Fs.existsSync("assets/"+timerId+"/"))
   {
     const dateEnd = new Date(year+"-"+month+"-"+day+"T"+hours+":"+minutes+":00");
     const dateNow = new Date(Date.now());
 
     var totalMiliSeconds=dateEnd.getTime()-dateNow.getTime();
+    if(background==1)
+    {
+      console.log("ok back")
+      if(nodays==1)
+      {
+        console.log("ok nodays")
+        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      }
+      else
+      {
+        console.log("no dayyys")
+        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      }
+    }
     
-    const imageForPalette = await Canvas.loadImage('assets/'+timerId+"/s59"+(darkmode==1?"_dark":"")+'.png');
+    const imageForPalette = await Canvas.loadImage("assets/"+timerId+"/s59"+(darkmode==1?"_dark":"")+".png");
     ctx.drawImage(imageForPalette, 0, 0, totalWidth, totalHeight);
     const imageDataForPalette=ctx.getImageData(0,0,totalWidth,totalHeight).data;
     
@@ -62,7 +79,7 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
     console.log(palette)
     console.log(palette.length)
     ctx.clearRect(0, 0, totalWidth, totalHeight);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, totalWidth, baseH);
 
     if(totalMiliSeconds<1000)
@@ -73,23 +90,34 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
       //encoder.setDelay(1000);  
       //encoder.setQuality(10); 
       
-      // const imgBackground = await Canvas.loadImage('assets/back/back.png');
-      // ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      if(background==1)
+    {
+      if(nodays==1)
+      {
+        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      }
+      else
+      {
+        const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+        ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+      }
+    }
 
       if(nodays==0)
       {
-        const imageDFromPng = await Canvas.loadImage('assets/'+timerId+"/d0"+(darkmode==1?"_dark":"")+".png");
+        const imageDFromPng = await Canvas.loadImage("assets/"+timerId+"/d0"+(darkmode==1?"_dark":"")+".png");
         ctx.drawImage(imageDFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
         positionCounter=positionCounter+1;
       }
 
-      const imageHFromPng = await Canvas.loadImage('assets/'+timerId+"/h0"+(darkmode==1?"_dark":"")+".png");
+      const imageHFromPng = await Canvas.loadImage("assets/"+timerId+"/h0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageHFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       positionCounter=positionCounter+1;
-      const imageMFromPng = await Canvas.loadImage('assets/'+timerId+"/m0"+(darkmode==1?"_dark":"")+".png");
+      const imageMFromPng = await Canvas.loadImage("assets/"+timerId+"/m0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageMFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       positionCounter=positionCounter+1;
-      const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
+      const imageSFromPng = await Canvas.loadImage("assets/"+timerId+"/s0"+(darkmode==1?"_dark":"")+".png");
       ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
       
       
@@ -168,31 +196,42 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
           
           
           //ctx.clearRect(0, 0, totalWidth, totalHeight);
-          ctx.fillStyle = '#ffffff';
+          ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, totalWidth, baseH);
           
-          // const imgBackground = await Canvas.loadImage('assets/back/back.png');
-          // ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+          if(background==1)
+          {
+            if(nodays==1)
+            {
+              const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+"_no_days.png");
+              ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+            }
+            else
+            {
+              const imgBackground = await Canvas.loadImage("assets/"+timerId+"/back"+(darkmode==1?"_dark":"")+".png");
+              ctx.drawImage(imgBackground, 0, 0, totalWidth, totalHeight);
+            }
+          }
           
           //console.time("writeOneFrame");
 
           //console.log("more than 1000")
           if(nodays==0)
           {
-            const imageDFromPng = await Canvas.loadImage('assets/'+timerId+"/d"+(remainingDays<=0?0:remainingDays)+(darkmode==1?"_dark":"")+'.png');
+            const imageDFromPng = await Canvas.loadImage("assets/"+timerId+"/d"+(remainingDays<=0?0:remainingDays)+(darkmode==1?"_dark":"")+".png");
             ctx.drawImage(imageDFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
             positionCounter=positionCounter+1;
           }
 
           
           
-          const imageHFromPng = await Canvas.loadImage('assets/'+timerId+"/h"+(remainingHours<=0?0:remainingHours)+(darkmode==1?"_dark":"")+'.png');
+          const imageHFromPng = await Canvas.loadImage("assets/"+timerId+"/h"+(remainingHours<=0?0:remainingHours)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageHFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           positionCounter=positionCounter+1;
-          const imageMFromPng = await Canvas.loadImage('assets/'+timerId+"/m"+(remainingMinutes<=0?0:remainingMinutes)+(darkmode==1?"_dark":"")+'.png');
+          const imageMFromPng = await Canvas.loadImage("assets/"+timerId+"/m"+(remainingMinutes<=0?0:remainingMinutes)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageMFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           positionCounter=positionCounter+1;
-          const imageSFromPng = await Canvas.loadImage('assets/'+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+'.png');
+          const imageSFromPng = await Canvas.loadImage("assets/"+timerId+"/s"+(remainingSeconds<=0?0:remainingSeconds)+(darkmode==1?"_dark":"")+".png");
           ctx.drawImage(imageSFromPng, baseW*positionCounter+paddingLeft, 0, baseW, baseH);
           //encoder.addFrame(ctx);
           
@@ -217,8 +256,8 @@ export const getTimerNoDays = async (req: Request, res: Response) => {
 
     encoder.finish();
 
-    res.writeHead(200, { 'Content-Type': 'image/gif' });
-    res.end(encoder.bytes(), 'binary');
+    res.writeHead(200, { "Content-Type": "image/gif" });
+    res.end(encoder.bytes(), "binary");
   }
 
 };

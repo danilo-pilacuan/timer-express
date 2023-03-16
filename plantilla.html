@@ -1,42 +1,9 @@
 <!DOCTYPE html>
     <html lang="en">
     <head>
+      <link rel="stylesheet" href="http://localhost:3000/{{plantilla}}">
       <style>
-        /* body {
-          width: 110px;
-          height: 120px;
-          text-align: center;
-          margin: 0px;
-          padding: 0px;
-          display: flex;
-          align-items:center;
-        justify-content:center;
-        }
-        .segundosCounter{
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 64px;
-    color: #0f265c;
-    
-}
-.segundosDescription{
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    color: #0f265c;
-    
-}
-.container
-{
-    vertical-align: middle;
-} */
-
-
-
-
-.progressbar {
+        .progressbar {
     position: absolute;
   width: 240px;
   height: 240px;
@@ -46,30 +13,30 @@
   transform: rotate(-90deg);
   vertical-align: middle;
   align-items: center;
-}
-
-.progressbar__svg {
+  }
+  
+  .progressbar__svg {
   position: relative;
   width: 100%;
   height: 100%;
   align-self: center;
   align-items: center;
   /* background-color: red; */
-}
-
-.progressbar__svg-circle {
+  }
+  
+  .progressbar__svg-circle {
   width: 100%;
   height: 100%;
   fill: none;
   stroke-width: 10;
   stroke-dasharray: 648;  /* se debe poner el perimetro*/
-  stroke-dashoffset: {{valorPorcentaje}}; /* se calcula por 647 - ((647*porcentaje)/100) siendo 647 el perimetro */
+  stroke-dashoffset: {{valorPorcentaje}};  /* se calcula por 647 - ((647*porcentaje)/100) siendo 647 el perimetro */
   stroke: #2F7ABF;
   stroke-linecap: round;
   /* transform: translate(5px, 5px); */
-}
-
-.second_circle {
+  }
+  
+  .second_circle {
   width: 100%;
   height: 100%;
   fill: none;
@@ -79,10 +46,10 @@
   stroke: rgb(123, 123, 138);
   stroke-linecap: round;
   /* transform: translate(5px, 5px); */
-}
-
-
-.outline1 {
+  }
+  
+  
+  .outline1 {
   width: 100%;
   height: 100%;
   fill: none;
@@ -90,9 +57,9 @@
   stroke-dasharray: 700;  /* se debe poner el perimetro*/
   stroke-dashoffset: 0; /* se calcula por 339 - ((339*porcentaje)/100) */
   stroke: rgb(220, 220, 220);
-}
-
-.outline2 {
+  }
+  
+  .outline2 {
   width: 100%;
   height: 100%;
   fill: none;
@@ -100,22 +67,10 @@
   stroke-dasharray: 700;  /* se debe poner el perimetro*/
   stroke-dashoffset: 0; /* se calcula por 339 - ((339*porcentaje)/100) */
   stroke: rgb(220, 220, 220);
-}
-
-
-
-
-
+  }
       </style>
-      <!-- <link rel="stylesheet" href="/bootstrap/css/plantilla.css"> -->
-      <link rel="stylesheet" href="http://localhost:3000/{{plantilla}}">
     </head>
-    <body>
-        <!-- <div class="circleContainer">
-            <div class="circle"></div>
-        </div> -->
-
-        
+    <body>        
         <div class="progressbar">
           <svg class="progressbar__svg">
               <circle cx="120" cy="120" r="104" class="second_circle"> </circle>
@@ -127,16 +82,22 @@
 
  
               
-  <div id="capture" class="container">
-      <div id="secondsCounter" class="segundosCounter">{{counter}}</div>
-      <div class="segundosDescription">
+      <div class="container">
+        <div class="contador">
+          {{#each digitos}}
+          <div class="digito">{{this}}</div>
+          {{/each}}
+        </div>
+        <div class="descripcion">
           {{message}}
-      </div>
-  </div> 
-
+        </div>
+    </div> 
+  
 
         
 
     
     </body>
     </html>
+    
+    

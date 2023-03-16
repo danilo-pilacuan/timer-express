@@ -1,0 +1,96 @@
+body {
+  width: 240px;
+  height: 240px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding-bottom: 8px;
+
+}
+
+.contador {
+  font-size: 80px;
+  line-height: 80px;
+  font-style: normal;
+  font-weight: 400;
+  color: #c3c3d3;
+  font-family: 'Arial';
+
+}
+
+.descripcion {
+  font-size: 30px;
+  line-height: 30px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 600;
+  color: #c3c3d3;
+
+}
+
+/* 
+
+.progressbar {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: 0px;
+  left: 0px;
+  transform: rotate(-90deg);
+  vertical-align: middle;
+  align-items: center;
+}
+
+.progressbar__svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  align-items: center;
+}
+
+.progressbar__svg-circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 10;
+  stroke-dasharray: 648;
+  stroke-dashoffset: -343;
+  stroke: #2F7ABF;
+  stroke-linecap: round;
+}
+
+.second_circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 10;
+  stroke-dasharray: 715;
+  stroke-dashoffset: 0;
+  stroke: rgb(123, 123, 138);
+  stroke-linecap: round;
+}
+
+
+.outline1 {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 0;
+  stroke: rgb(220, 220, 220);
+}
+
+.outline2 {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 0;
+  stroke: rgb(220, 220, 220);
+} */

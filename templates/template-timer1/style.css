@@ -10,7 +10,7 @@ body {
     padding-bottom: 8px;
     
     }
-  .segundosCounter{
+  .contador{
     font-size: 80px;
     line-height:80px;
     font-style: normal;
@@ -19,7 +19,7 @@ body {
     font-family: 'Arial';
     
   }
-  .segundosDescription{
+  .descripcion{
     font-size: 30px;
     line-height:30px;
     font-family: 'Arial';
