@@ -59,7 +59,7 @@ fill: none;
 stroke-width: 10;
 stroke-dasharray: 648;  /* se debe poner el perimetro*/
 stroke-dashoffset: -343; /* se calcula por 647 - ((647*porcentaje)/100) siendo 647 el perimetro */
-stroke: #2F7ABF;
+stroke: #ffdd00;
 stroke-linecap: round;
 /* transform: translate(5px, 5px); */
 }
