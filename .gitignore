@@ -51,3 +51,11 @@ assets/cache/*
 !assets/cache/timer3
 !assets/cache/timer4
 !assets/cache/backgrounds
+
+src/assets/cache/*
+
+!src/assets/cache/timer1
+!src/assets/cache/timer2
+!src/assets/cache/timer3
+!src/assets/cache/timer4
+!src/assets/cache/backgrounds

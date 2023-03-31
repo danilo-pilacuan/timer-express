@@ -11,18 +11,18 @@ import { Request, Response } from "express";
 
 import path from "path";
 
-var storage = multer.diskStorage({
-  destination: function (req: Request, file, cb) {
-    cb(null, "public/uploads/css");
-  },
-  filename: function (req: Request, file, cb) {
-    cb(null, uuidv4() + path.extname(file.originalname));
-  },
-});
-var upload = multer({ storage: storage });
+// var storage = multer.diskStorage({
+//   destination: function (req: Request, file, cb) {
+//     cb(null, "public/uploads/css");
+//   },
+//   filename: function (req: Request, file, cb) {
+//     cb(null, uuidv4() + path.extname(file.originalname));
+//   },
+// });
+// var upload = multer({ storage: storage });
 
 export const router = Router();
-router.post("/createTimer", upload.single("style"), createTimer);
+router.post("/createTimer", createTimer);
 
 router.get(
   "/getTimer",

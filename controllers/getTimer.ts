@@ -42,7 +42,7 @@ export const getTimer = async (req: Request, res: Response) => {
   const canvas = Canvas.createCanvas(totalWidth, baseH);
   const ctx : any = canvas.getContext("2d");
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = "#1f1f1f";
   ctx.fillRect(0, 0, totalWidth, baseH);
   
   var positionCounter=0;
@@ -74,7 +74,7 @@ export const getTimer = async (req: Request, res: Response) => {
     const palette=quantize(imageDataForPalette,256,{format:"rgba4444",oneBitAlpha:false,clearAlpha:true,clearAlphaThreshold:10,clearAlphaColor:0xFF});
     
     ctx.clearRect(0, 0, totalWidth, totalHeight);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#1f1f1f";
     ctx.fillRect(0, 0, totalWidth, baseH);
 
     if(totalMiliSeconds<1000)
@@ -156,7 +156,7 @@ export const getTimer = async (req: Request, res: Response) => {
 
           positionCounter=0;
           
-          ctx.fillStyle = "#ffffff";
+          ctx.fillStyle = "#1f1f1f";
           ctx.fillRect(0, 0, totalWidth, baseH);
           
           if(background==1)
